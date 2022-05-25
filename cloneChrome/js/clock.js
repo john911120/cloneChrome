@@ -9,4 +9,4 @@ function getClock() {
 }
 
 getClock() //calling function asap
-setInterval(getClock, 10)
+setInterval(getClock, 1000)
