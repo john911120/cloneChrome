@@ -11,8 +11,9 @@ function saveTodos(){
 
 function paintTodo(newTodo){
     const li = document.createElement("li")
+    li.id = newTodo.id
     const span = document.createElement("span")
-    span.innerText = newTodo
+    span.innerText = newTodo.text
     const button = document.createElement("button")
     button.innerText = "❌"
     button.addEventListener("click", deleteTodo)
@@ -25,23 +26,28 @@ function handleTodoSubmit(event){
     event.preventDefault()
     const newTodo = todoInput.value
     todoInput.value = ""
-    todoeS.push(newTodo)
-    paintTodo(newTodo)
+    const newTodoObj = {
+        text:newTodo,
+        id: Date.now()
+    }
+    todoeS.push(newTodoObj)
+    paintTodo(newTodoObj)
     saveTodos()
 }
 
 function deleteTodo(event) {
     const li = event.target.parentElement
     li.remove()
+    todoeS = todoeS.filter((toDo) => toDo.id !== parseInt(li.id))
+    saveTodos()
 }
 
 todoForm.addEventListener("submit", handleTodoSubmit)
 
 
 const SaveTodos = localStorage.getItem(TODOES_KEY)
-console.log(SaveTodos)
 if(SaveTodos !== null) {
     const parsedTodos = JSON.parse(SaveTodos)
     todoeS = parsedTodos
     parsedTodos.forEach(paintTodo);
-}
+} 
